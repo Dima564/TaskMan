@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TaskMan</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="register">Registration</string>
+    <string name="login">Log In</string>
+    <string name="fullname">Full name</string>
+    <string name="email">Email</string>
+    <string name="firstname">First name</string>
+    <string name="lastname">Last name</string>
+</resources>

@@ -1,5 +1,7 @@
 package com.example.TaskMan;
 
+import java.util.ServiceConfigurationError;
+
 /**
  * Created by dima on 4/17/14.
  */
@@ -31,6 +33,9 @@ public abstract class Commands {
     public class getTasks implements Command<String > {
         @Override
         public String execute(Object... params) {
+           int id = ((Integer) params[0]).intValue();
+//           return ServerFetcher
+
             return null;
         }
     }

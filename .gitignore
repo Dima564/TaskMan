@@ -5,7 +5,7 @@ gen/
 .idea/
 .iml
 *.iml
-out/
+
 Writeup/
 .project
 .classpath

@@ -1,8 +1,8 @@
 package com.example.TaskMan;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,7 +10,7 @@ import android.widget.EditText;
 /**
  * Created by dima on 4/16/14.
  */
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity extends FragmentActivity {
 
     public static final String USER = "LOGINACTIVITY.LOGIN.EXTRA";
     public static final String PASSWORD = "LOGINACTIVITY.PASSWORD.EXTRA";

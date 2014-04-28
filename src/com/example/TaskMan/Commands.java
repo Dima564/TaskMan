@@ -2,10 +2,12 @@ package com.example.TaskMan;
 
 import android.util.Base64;
 import android.util.Log;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.ServiceConfigurationError;
 
 /**
@@ -55,36 +57,44 @@ public abstract class Commands {
     }
 
 
+    public static String authorization(String username, String password) {
+        return Base64.encodeToString((username + ":" + password).getBytes(),0);
+    }
+
+    public static class getProjects implements Command<ArrayList<Project>> {
+
+        @Override
+        public ArrayList<Project> execute(Object... params) {
+            String auth = authorization(TaskManApplication.getUsername(),TaskManApplication.getPassword());
+            String jsonString = "";
+
+            try {
+                jsonString = ServerFetcher.get(auth,ServerFetcher.ENDPOINT + "api/projects");
+            } catch (IOException e) {
+                Log.i(TAG,"Networking error");
+                return new ArrayList<Project>();
+            }
+
+          return Project.fromJSONProjects(jsonString);
+
+        }
+    }
+
     public static class getSelf implements Command<User> {
         @Override
         public User execute(Object... params) {
-            String username = TaskManApplication.getUsername();
-            String password = TaskManApplication.getPassword();
-            String authorization =
-                    Base64.encodeToString((username + ":" + password).getBytes(),0);
+            String auth = authorization(TaskManApplication.getUsername(),TaskManApplication.getPassword());
             String jsonString = "";
-            JSONObject json = null;
 
             try {
-                jsonString = ServerFetcher.get(authorization, ServerFetcher.ENDPOINT + "api/users/self");
+                jsonString = ServerFetcher.get(auth, ServerFetcher.ENDPOINT + "api/users/self");
             } catch (IOException e) {
-                Log.i(TAG,"Something happened");
+                Log.i(TAG,"Networking error");
                 return null;
             }
-            try {
-                json = new JSONObject(jsonString);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
-            User u;
-            try {
-                u = new User(json);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
-            return u;
+
+
+            return User.fromJSON(jsonString);
         }
     }
 

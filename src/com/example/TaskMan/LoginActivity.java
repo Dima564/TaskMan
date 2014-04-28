@@ -1,10 +1,10 @@
 package com.example.TaskMan;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 //import org.apache.commons.codec.binary.Base64;
-public class LoginActivity extends FragmentActivity {
+public class LoginActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
@@ -54,10 +54,8 @@ public class LoginActivity extends FragmentActivity {
         mLogInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//            dialog.
-
-
-
+                TaskManApplication.setCredentials(mUsernameEditText.getText().toString(),mPasswordEditText.getText().toString());
+                new LogIn().execute();
             }
         });
 
@@ -65,11 +63,13 @@ public class LoginActivity extends FragmentActivity {
 
     }
 
-    private class StartMainActivity extends AsyncTask<Void,Void,Void> {
+    private class LogIn extends AsyncTask<String,Void,Void> {
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(String... params) {
+
 
             User u = new Commands.getSelf().execute();
+            u.setProjects(new Commands.getProjects().execute());
             TaskManApplication.setCurrentUser(u);
             return null;
         }

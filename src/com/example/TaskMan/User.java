@@ -3,6 +3,8 @@ package com.example.TaskMan;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by dima on 4/22/14.
  */
@@ -19,24 +21,47 @@ public class User {
     private String mEmail;
     private String mLastname = "";
     private String mFirstname = "";
-
+    private User mUser;
+    private ArrayList<Project> mProjects;
 
     // TODO
     public JSONObject toJSON() {
         return null;
     }
+    private User() {
 
-    public User(JSONObject json) throws JSONException {
-        mId = json.getInt(JSON_ID);
-        mUsername = json.getString(JSON_USERNAME);
-        mEmail = json.getString(JSON_EMAIL);
-        if (json.has(JSON_FIRST_NAME)) {
-            mFirstname = json.getString(JSON_FIRST_NAME);
-        }
-        if (json.has(JSON_LAST_NAME)) {
-            mLastname = json.getString(JSON_LAST_NAME);
-        }
     }
+
+    public ArrayList<Project> getProjects() {
+        return mProjects;
+    }
+
+    public void setProjects(ArrayList<Project> projects) {
+        mProjects = projects;
+    }
+
+    public static User fromJSON(String jsonString) {
+
+
+       User u = new User();
+       try {
+           JSONObject json = new JSONObject(jsonString);
+           u.mId = json.getInt(JSON_ID);
+           u.mUsername = json.getString(JSON_USERNAME);
+           u.mEmail = json.getString(JSON_EMAIL);
+           if (json.has(JSON_FIRST_NAME)) {
+               u.mFirstname = json.getString(JSON_FIRST_NAME);
+           }
+           if (json.has(JSON_LAST_NAME)) {
+               u.mLastname = json.getString(JSON_LAST_NAME);
+           }
+       } catch (JSONException e) {
+           e.printStackTrace();
+          return null;
+       }
+
+       return u;
+   }
 
     public String getUsername() {
         return mUsername;

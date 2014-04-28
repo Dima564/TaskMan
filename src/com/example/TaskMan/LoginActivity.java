@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -22,7 +23,6 @@ public class LoginActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
-    public static final String ENDPOINT = "http://54.187.34.1:8000/";
 
 
     EditText mUsernameEditText;
@@ -38,7 +38,10 @@ public class LoginActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        getActionBar().hide();
         setContentView(R.layout.login);
+
 
 
 //      TaskManApplication.setCredentials("dima","password");
@@ -59,13 +62,33 @@ public class LoginActivity extends Activity {
             }
         });
 
+        mSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoginActivity.this, RegistrationActivity.class);
+                i.putExtra(mUsernameEditText.getText().toString(),RegistrationActivity.USERNAME);
+                startActivity(i);
+            }
+        });
+
 
 
     }
 
-    private class LogIn extends AsyncTask<String,Void,Void> {
+    public class LogIn extends AsyncTask<Void,Void,Void> {
+
         @Override
-        protected Void doInBackground(String... params) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(LoginActivity.this);
+            dialog.setMessage("Logging in ... ");
+            dialog.setMessage("Logging in. Please, wait");
+            dialog.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
 
 
             User u = new Commands.getSelf().execute();
@@ -79,6 +102,11 @@ public class LoginActivity extends Activity {
             super.onPostExecute(aVoid);
             Intent i = new Intent(LoginActivity.this,TaskManMainActivity.class);
             startActivity(i);
+
+
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
 

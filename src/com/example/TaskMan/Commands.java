@@ -1,14 +1,12 @@
 package com.example.TaskMan;
 
+import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.ServiceConfigurationError;
 
 /**
  * Created by dima on 4/17/14.
@@ -16,45 +14,8 @@ import java.util.ServiceConfigurationError;
 public abstract class Commands {
 
     public static final String TAG = "Commands";
-    // register user and return it in case of success
-    // null in case of failure
-    // TODO add error codes/ exceptions
-    public static class SignUp implements Command<User> {
-        @Override
-        public User execute(Object... params) {
-
-            String username = (String) params[0];
-            String password = (String) params[1];
-            String email = (String) params[2];
-            String lastName = (String) params[3];
-            String firstName = (String) params[4];
 
 
-            return null;
-        }
-    }
-
-
-
-    // get all projects
-    // - your projects
-    // - projects you're involved in
-    public class GetProjects implements Command<String> {
-        @Override
-        public String execute(Object... params) {
-            return null;
-        }
-    }
-
-    public class getTasks implements Command<String > {
-        @Override
-        public String execute(Object... params) {
-           int id = ((Integer) params[0]).intValue();
-//           return ServerFetcher
-
-            return null;
-        }
-    }
 
 
     public static String authorization(String username, String password) {
@@ -95,6 +56,70 @@ public abstract class Commands {
 
 
             return User.fromJSON(jsonString);
+        }
+    }
+
+    public static class addProject implements Command<Boolean> {
+
+        @Override
+        public Boolean execute(Object... params) {
+            String title = (String) params[0];
+            String body = (String) params[1];
+            String auth = authorization(TaskManApplication.getUsername(),TaskManApplication.getPassword());
+            String requestBody = null;
+            try {
+                requestBody = Project.newProjectJSON(title,body).toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            try {
+                ServerFetcher.post(auth, ServerFetcher.ENDPOINT + "api/projects", requestBody);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }  
+
+            return true;
+        }
+    }
+
+
+    // TODO This is argument pass example: refactor existing commands to match this pattern
+    // TODO Handle return value
+    public static class registerUser implements Command<Boolean> {
+
+        public static final String USERNAME_EXTRA = "username";
+        public static final String PASSWORD_EXTRA = "password";
+        public static final String EMAIL_EXTRA = "email";
+        public static final String FIRST_NAME_EXTRA = "firstName";
+        public static final String LAST_NAME_EXTRA = "lastName";
+
+        @Override
+        public Boolean execute(Object... params) {
+            Bundle args = (Bundle) params[0];
+            String username = args.getString(USERNAME_EXTRA);
+            String password = args.getString(PASSWORD_EXTRA);
+            String email = args.getString(EMAIL_EXTRA);
+            String firstName = args.getString(FIRST_NAME_EXTRA);
+            String lastName = args.getString(LAST_NAME_EXTRA);
+            String requestBody = "";
+
+            try {
+                requestBody = User.newUserJSON(username,password,email,firstName,lastName).toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            try {
+                ServerFetcher.post("",ServerFetcher.ENDPOINT + "api/users/register", requestBody);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
         }
     }
 

@@ -26,7 +26,7 @@ public class ProjectsFragment extends ListFragment {
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private class ProjectsAdapter extends ArrayAdapter<Project> {
+    public class ProjectsAdapter extends ArrayAdapter<Project> {
         Context c;
         public ProjectsAdapter(Context context, int textViewResourceId) {
             super(context, textViewResourceId);
@@ -42,7 +42,6 @@ public class ProjectsFragment extends ListFragment {
             }
             ((TextView)convertView.findViewById(R.id.project_title))
                     .setText(TaskManApplication.getCurrentUser().getProjects().get(position).getTitle());
-
             return convertView;
         }
 

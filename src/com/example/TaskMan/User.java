@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class User {
     private static final String JSON_ID = "id";
+    private static final String JSON_PASSWORD = "password";
     private static final String JSON_USERNAME = "username";
     private static final String JSON_EMAIL = "email";
     private static final String JSON_FIRST_NAME = "first_name";
@@ -79,4 +80,14 @@ public class User {
         return mFirstname;
     }
 
+
+    public static JSONObject newUserJSON(String username, String password, String email, String firstname, String lastname) throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(JSON_USERNAME,username);
+        json.put(JSON_PASSWORD,password);
+        json.put(JSON_EMAIL,email);
+        json.put(JSON_FIRST_NAME,firstname);
+        json.put(JSON_LAST_NAME,lastname);
+        return json;
+    }
 }

@@ -90,4 +90,12 @@ public class Project {
     public String getTitle() {
         return mTitle;
     }
+
+
+    public static JSONObject newProjectJSON(String title, String body) throws JSONException {
+        JSONObject json = new JSONObject();
+        json.put(JSON_TITLE,title);
+        json.put(JSON_BODY,body);
+        return json;
+    }
 }

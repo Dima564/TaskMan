@@ -20,7 +20,7 @@ public class TaskManApplication extends Application {
     public void onCreate() {
         super.onCreate();
         credentials = getSharedPreferences(PREFS_CREDENTIALS,MODE_PRIVATE);
-        deleteCredentials();
+//        deleteCredentials();
         updateCredentials();
     }
 
@@ -47,7 +47,7 @@ public class TaskManApplication extends Application {
         password = credentials.getString(PREFS_PASSWORD,"");
     }
 
-    private static void deleteCredentials() {
+    public static void deleteCredentials() {
         SharedPreferences.Editor editor = credentials.edit();
         editor.putString(PREFS_USERNAME,"");
         editor.putString(PREFS_PASSWORD,"");

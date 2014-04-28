@@ -38,6 +38,7 @@ public abstract class ServerFetcher {
     }
 
 
+
     public static int delete(String authorization,String request) throws IOException {
         URL url = new URL(request);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

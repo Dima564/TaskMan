@@ -1,9 +1,11 @@
 package com.example.TaskMan;
 
-import android.app.Activity;
+import android.app.*;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 
 /**
  * Created by dima on 4/22/14.
@@ -29,6 +31,7 @@ public class DispatchActivity extends Activity {
         @Override
         protected Void doInBackground(Void... params) {
             User u = new Commands.getSelf().execute();
+            u.setProjects(new Commands.getProjects().execute());
             TaskManApplication.setCurrentUser(u);
             return null;
         }
@@ -41,3 +44,4 @@ public class DispatchActivity extends Activity {
         }
     }
 }
+

@@ -1,4 +1,4 @@
-package com.example.TaskMan;
+package com.example.TaskMan.main.ui.activities;
 
 import android.app.*;
 import android.content.DialogInterface;
@@ -6,20 +6,19 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.*;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import org.w3c.dom.Text;
+import android.widget.*;
+import com.example.TaskMan.R;
+import com.example.TaskMan.main.Commands;
+import com.example.TaskMan.main.TaskManApplication;
+import com.example.TaskMan.main.ui.fragments.ProjectsListFragment;
 
 /**
  * Created by dima on 4/22/14.
  */
-public class TaskManMainActivity extends Activity {
+public class ProjectListActivity extends Activity {
     private static final int DIALOG_NEW_PROJECT = 0;
 
-    EditText titleEditText;
-    EditText bodyEditText;
+
 
 
     @Override
@@ -27,25 +26,28 @@ public class TaskManMainActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         FrameLayout fl = new FrameLayout(this);
-        fl.setId(R.id.fragmentContainer);
+        fl.setId(R.id.fragment_container);
         setContentView(fl);
 
         FragmentManager manager = getFragmentManager();
-        Fragment fragment = manager.findFragmentById(R.id.fragmentContainer);
+        Fragment fragment = manager.findFragmentById(R.id.fragment_container);
 
         if (fragment == null ) {
-            fragment = new ProjectsFragment();
+            fragment = new ProjectsListFragment();
             manager.beginTransaction()
-                    .add(R.id.fragmentContainer, fragment)
+                    .add(R.id.fragment_container, fragment)
                     .commit();
+
+
         }
+
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.projects_optiopns_menu,menu);
+        inflater.inflate(R.menu.project_list_options_menu,menu);
         return true;
     }
 
@@ -57,7 +59,7 @@ public class TaskManMainActivity extends Activity {
                 return true;
             case R.id.log_out:
                 TaskManApplication.deleteCredentials();
-                Intent i = new Intent(TaskManMainActivity.this,LoginActivity.class);
+                Intent i = new Intent(ProjectListActivity.this,LoginActivity.class);
                 startActivity(i);
             default:
                  return super.onOptionsItemSelected(item);
@@ -70,6 +72,8 @@ public class TaskManMainActivity extends Activity {
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case DIALOG_NEW_PROJECT:
+                final EditText titleEditText;
+                final EditText bodyEditText;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 LayoutInflater inflater = getLayoutInflater();
                 View v = inflater.inflate(R.layout.new_project_dialog,null);
@@ -86,7 +90,7 @@ public class TaskManMainActivity extends Activity {
                         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(TaskManMainActivity.this,"cancel",Toast.LENGTH_LONG).show();
+                                Toast.makeText(ProjectListActivity.this,"cancel",Toast.LENGTH_LONG).show();
                             }
                         });
 
@@ -111,14 +115,14 @@ public class TaskManMainActivity extends Activity {
         @Override
         protected void onPostExecute(Boolean result) {
             String state = result ? "Project added" : "Error has occurred";
-            Toast.makeText(TaskManMainActivity.this,state,Toast.LENGTH_LONG);
+            Toast.makeText(ProjectListActivity.this,state,Toast.LENGTH_LONG);
             updateUI();
         }
     }
 
     private void updateUI() {
         FragmentManager manager = getFragmentManager();
-        ListFragment fragment = (ListFragment) manager.findFragmentById(R.id.fragmentContainer);
-        ((ProjectsFragment.ProjectsAdapter)fragment.getListAdapter()).notifyDataSetChanged();
+        ListFragment fragment = (ListFragment) manager.findFragmentById(R.id.fragment_container);
+        ((ProjectsListFragment.ProjectsAdapter)fragment.getListAdapter()).notifyDataSetChanged();
     }
 }

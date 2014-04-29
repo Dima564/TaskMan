@@ -23,8 +23,8 @@ public class Project {
 
     private int mAuthor;
     private int mId;
-    private String mTitle;
-    private String mBody;
+    private String mTitle = "";
+    private String mBody = "";
 
     // TODO Use Date instead
     private String mCreated;
@@ -97,5 +97,17 @@ public class Project {
         json.put(JSON_TITLE,title);
         json.put(JSON_BODY,body);
         return json;
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public String getBody() {
+        return mBody;
+    }
+
+    public ArrayList<Task> getTasks() {
+        return mTasks;
     }
 }

@@ -1,7 +1,8 @@
-package com.example.TaskMan;
+package com.example.TaskMan.main;
 
-import android.app.Application;
-import android.content.SharedPreferences;
+        import android.app.Application;
+        import android.content.SharedPreferences;
+        import com.example.TaskMan.User;
 
 /**
  * Created by dima on 4/17/14.

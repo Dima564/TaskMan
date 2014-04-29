@@ -1,11 +1,12 @@
-package com.example.TaskMan;
+package com.example.TaskMan.main.ui.activities;
 
 import android.app.*;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import com.example.TaskMan.User;
+import com.example.TaskMan.main.Commands;
+import com.example.TaskMan.main.TaskManApplication;
 
 /**
  * Created by dima on 4/22/14.
@@ -39,7 +40,7 @@ public class DispatchActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Intent i = new Intent(DispatchActivity.this,TaskManMainActivity.class);
+            Intent i = new Intent(DispatchActivity.this,ProjectListActivity.class);
             startActivity(i);
         }
     }

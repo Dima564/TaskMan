@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="fragmentContainer" type="id">fragment_container</item>
+    <item name="list" type="id">list</item>
 </resources>

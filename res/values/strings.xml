@@ -14,4 +14,10 @@
     <string name="create_project">Create Project</string>
     <string name="cancel">Cancel</string>
     <string name="logout">Log out</string>
+    <string name="project_name">Project title:</string>
+    <string name="tasks">Tasks:</string>
+    <string name="delete">Delete project</string>
+    <string name="priority">Priority:</string>
+    <string name="add_task">Add task</string>
+    <string name="create_task">Create task</string>
 </resources>

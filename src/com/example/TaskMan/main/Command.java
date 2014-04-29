@@ -1,4 +1,4 @@
-package com.example.TaskMan;
+package com.example.TaskMan.main;
 
 /**
  * Created by dima on 4/18/14.

@@ -1,22 +1,18 @@
-package com.example.TaskMan;
+package com.example.TaskMan.main.ui.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.ExecutionException;
+import com.example.TaskMan.R;
+import com.example.TaskMan.User;
+import com.example.TaskMan.main.Commands;
+import com.example.TaskMan.main.TaskManApplication;
 
 //import org.apache.commons.codec.binary.Base64;
 public class LoginActivity extends Activity {
@@ -40,7 +36,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         getActionBar().hide();
-        setContentView(R.layout.login);
+        setContentView(R.layout.login_layout);
 
 
 
@@ -57,7 +53,7 @@ public class LoginActivity extends Activity {
         mLogInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaskManApplication.setCredentials(mUsernameEditText.getText().toString(),mPasswordEditText.getText().toString());
+                TaskManApplication.setCredentials(mUsernameEditText.getText().toString(), mPasswordEditText.getText().toString());
                 new LogIn().execute();
             }
         });
@@ -100,7 +96,7 @@ public class LoginActivity extends Activity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Intent i = new Intent(LoginActivity.this,TaskManMainActivity.class);
+            Intent i = new Intent(LoginActivity.this,ProjectListActivity.class);
             startActivity(i);
 
 

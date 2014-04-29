@@ -1,9 +1,15 @@
-package com.example.TaskMan;
+package com.example.TaskMan.main;
 
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import com.example.TaskMan.Project;
+import com.example.TaskMan.ServerFetcher;
+import com.example.TaskMan.Task;
+import com.example.TaskMan.User;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +20,6 @@ import java.util.ArrayList;
 public abstract class Commands {
 
     public static final String TAG = "Commands";
-
 
 
 
@@ -30,7 +35,7 @@ public abstract class Commands {
             String jsonString = "";
 
             try {
-                jsonString = ServerFetcher.get(auth,ServerFetcher.ENDPOINT + "api/projects");
+                jsonString = ServerFetcher.get(auth, ServerFetcher.ENDPOINT + "api/projects");
             } catch (IOException e) {
                 Log.i(TAG,"Networking error");
                 return new ArrayList<Project>();
@@ -119,6 +124,74 @@ public abstract class Commands {
                 e.printStackTrace();
                 return false;
             }
+            return true;
+        }
+    }
+
+    public static class getTasksForProject implements Command<Void> {
+        public static final String PROJECT_ID_EXTRA = "id";
+        @Override
+        public Void execute(Object... params) {
+            int projectId = (Integer)params[0];
+            String auth = authorization(TaskManApplication.getUsername(),TaskManApplication.getPassword());
+            String jsonString = "";
+
+            try {
+                jsonString = ServerFetcher.get(auth,
+                        ServerFetcher.ENDPOINT + "api/projects/" + String.valueOf(projectId) + "/tasks");
+            } catch (IOException e) {
+                Log.i(TAG,"Networking error");
+                return null;
+            }
+
+            JSONArray json = null;
+            try {
+                json = (JSONArray) new JSONTokener(jsonString).nextValue();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            TaskManApplication.getCurrentUser().getProject(projectId).addTasks(json);
+
+
+            return null;
+        }
+    }
+
+
+    public static class addTask implements Command<Boolean> {
+        public static final String PROJECT_ID_EXTRA = "project_id";
+        public static final String TITLE_EXTRA = "title";
+        public static final String BODY_EXTRA = "body";
+        public static final String COMPLETED_EXTRA = "completed";
+        public static final String PRIORITY_EXTRA = "priority";
+
+        @Override
+        public Boolean execute(Object... params) {
+            Bundle args = (Bundle) params[0];
+            Integer projectId = args.getInt(PROJECT_ID_EXTRA);
+            String title = args.getString(TITLE_EXTRA);
+            String body = args.getString(BODY_EXTRA);
+            Boolean completed = false;
+            Integer priority = args.getInt(PRIORITY_EXTRA);
+            String auth = authorization(TaskManApplication.getUsername(),TaskManApplication.getPassword());
+            String requestBody = null;
+
+            try {
+                requestBody = Task.newTaskJSON(title, body, completed, priority).toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            try {
+                ServerFetcher.post(auth, ServerFetcher.ENDPOINT + "api/projects/" + String.valueOf(projectId) + "/tasks", requestBody);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
             return true;
         }
     }

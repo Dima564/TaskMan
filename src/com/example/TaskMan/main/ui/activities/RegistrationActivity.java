@@ -1,4 +1,4 @@
-package com.example.TaskMan;
+package com.example.TaskMan.main.ui.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.example.TaskMan.R;
+import com.example.TaskMan.User;
+import com.example.TaskMan.main.Commands;
+import com.example.TaskMan.main.TaskManApplication;
 
 /**
  * Created by dima on 4/16/14.
@@ -30,10 +34,8 @@ public class RegistrationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration);
-
+        setContentView(R.layout.registration_layout);
         bindWidgets();
-
     }
 
     private void bindWidgets() {
@@ -92,7 +94,7 @@ public class RegistrationActivity extends Activity {
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
 
-            Intent i = new Intent(RegistrationActivity.this,TaskManMainActivity.class);
+            Intent i = new Intent(RegistrationActivity.this,ProjectListActivity.class);
             startActivity(i);
 
 

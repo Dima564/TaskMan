@@ -90,4 +90,14 @@ public class User {
         json.put(JSON_LAST_NAME,lastname);
         return json;
     }
+
+    public Project getProject(int id) {
+        for (Project p : mProjects) {
+            if (p.getId() == id)
+                return p;
+        }
+
+        return null;
+    }
+
 }

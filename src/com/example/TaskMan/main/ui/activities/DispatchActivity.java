@@ -4,6 +4,7 @@ import android.app.*;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.Toast;
 import com.example.TaskMan.User;
 import com.example.TaskMan.main.Commands;
 import com.example.TaskMan.main.TaskManApplication;
@@ -28,18 +29,30 @@ public class DispatchActivity extends Activity {
     }
 
 
-    private class StartMainActivity extends AsyncTask<Void,Void,Void> {
+    private class StartMainActivity extends AsyncTask<Void,Void,Boolean> {
+
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             User u = new Commands.getSelf().execute();
+            if (u == null) {
+               return false;
+            }
             u.setProjects(new Commands.getProjects().execute());
             TaskManApplication.setCurrentUser(u);
-            return null;
+            return true;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+
+            if (!success) {
+                Toast.makeText(DispatchActivity.this,
+                        "Networking error. Please, check connection to the internet",Toast.LENGTH_LONG).show();
+                Intent i = new Intent(DispatchActivity.this, LoginActivity.class);
+                startActivity(i);
+                return;
+            }
             Intent i = new Intent(DispatchActivity.this,ProjectListActivity.class);
             startActivity(i);
         }
